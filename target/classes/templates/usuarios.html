@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Usuários</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>tailwind.config = { theme: { extend: { fontFamily: { 'sans': ['Poppins', 'sans-serif'] } } } }</script>
+</head>
+<body class="bg-gray-50 font-sans text-slate-800 p-6 md:p-10">
+
+<div class="max-w-5xl mx-auto">
+    <div class="flex justify-between items-center mb-8">
+        <h1 class="text-3xl font-extrabold text-slate-900">Gerenciar Usuários</h1>
+        <a href="/" class="text-blue-600 hover:underline font-semibold">← Voltar para Home</a>
+    </div>
+
+    <div class="bg-white rounded-3xl shadow-xl overflow-hidden border border-slate-100">
+        <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+                <thead>
+                <tr class="bg-slate-100 text-slate-600 text-sm uppercase tracking-wider">
+                    <th class="p-6 font-bold border-b border-slate-200">ID</th>
+                    <th class="p-6 font-bold border-b border-slate-200">Nome</th>
+                    <th class="p-6 font-bold border-b border-slate-200">Cargo</th>
+                    <th class="p-6 font-bold border-b border-slate-200">Saldo</th>
+                    <th class="p-6 font-bold border-b border-slate-200 text-center">Ações</th>
+                </tr>
+                </thead>
+                <tbody class="text-sm">
+                <tr th:each="u : ${usuarios}" class="hover:bg-blue-50/50 transition border-b border-slate-100 last:border-0">
+                    <td class="p-6 font-mono text-slate-500" th:text="${u.id}">1</td>
+                    <td class="p-6 font-bold text-slate-800 text-lg" th:text="${u.nome}">Ash</td>
+                    <td class="p-6">
+                        <span th:if="${u.staff}" class="bg-purple-100 text-purple-700 px-3 py-1 rounded-full text-xs font-bold uppercase">Admin</span>
+                        <span th:unless="${u.staff}" class="bg-slate-100 text-slate-500 px-3 py-1 rounded-full text-xs font-bold uppercase">Cliente</span>
+                    </td>
+                    <td class="p-6 font-medium text-green-600">
+                        ₽ <span th:text="${#numbers.formatDecimal(u.dinheiro, 1, 'POINT', 2, 'COMMA')}">500,00</span>
+                    </td>
+                    <td class="p-6 text-center space-x-2">
+                        <form th:action="@{/editar/{id}(id=${u.id})}" method="GET" style="display:inline;">
+                            <button class="text-yellow-600 hover:text-yellow-800 font-bold hover:bg-yellow-50 px-3 py-2 rounded transition">Editar</button>
+                        </form>
+                        <form th:action="@{/excluir/{id}(id=${u.id})}" method="POST" style="display:inline;">
+                            <button onclick="return confirm('Tem certeza?')" class="text-red-500 hover:text-red-700 font-bold hover:bg-red-50 px-3 py-2 rounded transition">Excluir</button>
+                        </form>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

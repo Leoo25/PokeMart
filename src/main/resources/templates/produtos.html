@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Poké Mart - Loja Oficial</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'sans': ['Poppins', 'sans-serif'],
+                    },
+                    colors: {
+                        'poke-blue': '#1e293b',
+                        'poke-dark': '#0f172a',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Estilo para a imagem de fundo do Hero (Banner Principal) */
+        .hero-bg {
+            /* Coloque aqui a URL da imagem de fundo exata do jogo se tiver,
+               por enquanto usei um placeholder temático escuro */
+            background-image: linear-gradient(to bottom, rgba(15, 23, 42, 0.4), rgba(15, 23, 42, 0.9)),
+                              url('https://images.unsplash.com/photo-1613771404721-c55d8d2a861d?q=80&w=1920&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        /* Efeito de vidro para o Header */
+        .glass-nav {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+        }
+    </style>
+</head>
+<body class="bg-gray-50 font-sans text-slate-800 antialiased selection:bg-blue-500 selection:text-white">
+
+<div class="fixed top-0 left-0 w-full z-50 pt-6 px-4 flex justify-center">
+    <nav class="glass-nav rounded-full shadow-2xl px-8 py-3 w-full max-w-7xl flex items-center justify-between border border-white/50">
+        <a href="/" class="flex items-center gap-2 group">
+            <div class="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center text-white font-bold shadow-lg group-hover:rotate-180 transition-transform duration-500">
+                <div class="w-2 h-2 bg-white rounded-full border-2 border-blue-600"></div>
+            </div>
+            <span class="text-xl font-extrabold tracking-tight text-slate-900">POKÉ <span class="text-blue-600">MART</span></span>
+        </a>
+
+        <div class="hidden md:flex items-center gap-8 font-medium text-slate-600">
+            <a href="/" class="hover:text-blue-600 transition-colors">Home</a>
+            <a href="/consumirApi" class="text-blue-600 font-semibold">Itens</a>
+            <a href="/contato" class="hover:text-blue-600 transition-colors">Contato</a>
+        </div>
+
+        <div class="flex items-center gap-4">
+            <div th:if="${session.logado != null}" class="flex items-center gap-3">
+                <div class="hidden md:flex flex-col items-end leading-tight">
+                    <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Saldo</span>
+                    <span class="font-bold text-blue-600 bg-blue-50 px-3 py-1 rounded-full border border-blue-100">
+                            ₽ <span th:text="${#numbers.formatDecimal(session.logado.dinheiro, 1, 'POINT', 2, 'COMMA')}">50000,00</span>
+                        </span>
+                </div>
+                <div class="w-10 h-10 bg-slate-200 rounded-full flex items-center justify-center overflow-hidden border-2 border-white shadow-md">
+                    <svg class="w-6 h-6 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
+                </div>
+
+                <a th:if="${session.logado.staff}" href="/produtos/novo" class="bg-blue-600 hover:bg-blue-700 text-white p-2 rounded-full transition shadow-lg" title="Adicionar Item">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                    </svg>
+                </a>
+            </div>
+
+            <div th:unless="${session.logado != null}">
+                <a href="/login" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2.5 rounded-full font-semibold transition-all shadow-lg hover:shadow-blue-500/30 text-sm">
+                    Login
+                </a>
+            </div>
+        </div>
+    </nav>
+</div>
+
+<header class="hero-bg h-[600px] w-full relative flex items-center justify-center -mt-24 pt-24 overflow-hidden">
+    <div class="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-gray-50 to-transparent"></div>
+
+    <div class="container max-w-7xl mx-auto px-6 relative z-10 text-center md:text-left mt-10">
+        <h1 class="text-4xl md:text-6xl font-extrabold text-white leading-tight drop-shadow-lg max-w-2xl">
+            A melhor loja <br/>
+            online em todo <br/>
+            mundo <span class="text-yellow-400">Pokémon!</span>
+        </h1>
+    </div>
+
+    <div class="absolute right-0 bottom-0 opacity-20 pointer-events-none">
+    </div>
+</header>
+
+<main class="container max-w-7xl mx-auto px-6 -mt-20 relative z-20 pb-20">
+
+    <div class="mb-8 space-y-2">
+        <div th:if="${param.updated}" class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 rounded shadow-md flex items-center justify-between">
+            <span>Compra realizada com sucesso! O item foi adicionado ao seu inventário.</span>
+        </div>
+        <div th:if="${param.errorSemSaldo}" class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 rounded shadow-md">
+            Você não tem saldo suficiente para esta compra.
+        </div>
+        <div th:if="${param.successEdit}" class="bg-blue-100 border-l-4 border-blue-500 text-blue-700 p-4 rounded shadow-md">
+            Produto atualizado com sucesso!
+        </div>
+        <div th:if="${param.successDelete}" class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 rounded shadow-md">
+            Produto excluído do sistema.
+        </div>
+        <div th:if="${error}" class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 rounded shadow-md" th:text="${error}"></div>
+    </div>
+
+    <div class="mb-10">
+        <div class="inline-flex items-center bg-white rounded-full shadow-lg border border-slate-200 p-1.5 overflow-x-auto max-w-full">
+
+            <span class="px-4 py-2 font-bold text-slate-700 whitespace-nowrap">Categorias</span>
+
+            <div class="filtros">
+                <a href="/categoria" class="btn btn-primary">> </a>
+            </div>
+
+            <a th:each="cat : ${listaCategorias}"
+               th:href="@{/categoria(categoria=${cat})}"
+               th:text="${cat}"
+               class="px-6 py-2 rounded-full font-medium transition-all duration-300 whitespace-nowrap"
+               th:classappend="${categoriaSelecionada == cat} ? 'bg-slate-800 text-white shadow-md' : 'text-slate-500 hover:bg-slate-100'">
+            </a>
+
+        </div>
+    </div>
+
+
+            <div th:if="${categoriaSelecionada != null}" class="mb-6 inline-block">
+        <h2 class="text-xl font-bold text-slate-700 border-2 border-slate-300 rounded-full px-6 py-2 uppercase tracking-wide">
+            <span th:text="${categoriaSelecionada}">Categoria</span>:
+        </h2>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+
+        <div th:each="produto : ${response}" class="group bg-white rounded-[2rem] p-6 shadow-sm hover:shadow-2xl transition-all duration-300 border border-slate-100 flex flex-col relative overflow-hidden">
+
+            <div th:if="${session.logado != null && session.logado.staff}" class="absolute top-4 right-4 z-10 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                <a th:href="@{/produtos/editar/{id}(id=${produto.id})}" class="bg-yellow-400 text-yellow-900 p-2 rounded-full hover:bg-yellow-500 shadow-sm" title="Editar">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
+                </a>
+                <a th:href="@{/produtos/deletar/{id}(id=${produto.id})}" class="bg-red-500 text-white p-2 rounded-full hover:bg-red-600 shadow-sm" onclick="return confirm('Excluir este item?');" title="Excluir">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                </a>
+            </div>
+
+            <div class="h-48 flex items-center justify-center mb-4 relative">
+                <div class="absolute w-32 h-32 bg-slate-100 rounded-full blur-2xl opacity-50 group-hover:bg-blue-50 transition-colors"></div>
+                <img th:src="${produto.imagemUrl != null ? produto.imagemUrl : 'https://via.placeholder.com/150'}"
+                     alt="Imagem do Produto"
+                     class="w-40 h-40 object-contain drop-shadow-lg transform group-hover:scale-110 transition-transform duration-300 z-10"/>
+            </div>
+
+            <div class="flex-grow">
+                <div class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">
+                    ₽<span th:text="${#numbers.formatDecimal(produto.preco, 1, 'POINT', 2, 'COMMA')}">200,00</span>
+                </div>
+
+                <h3 th:text="${produto.nome}" class="text-2xl font-bold text-slate-800 mb-2 leading-tight">Nome do Item</h3>
+
+                <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-3">
+                    DISPONÍVEIS: <span th:text="${produto.qtd}">4</span>
+                </p>
+
+                <p th:text="${produto.descricao}" class="text-sm text-slate-500 line-clamp-3 mb-4 font-light">
+                    Descrição breve do item para capturar Pokémon selvagens...
+                </p>
+            </div>
+
+            <div class="mt-auto">
+                <div th:if="${session.logado != null}">
+                    <form action="/produtos/diminuir" method="post">
+                        <input type="hidden" name="id" th:value="${produto.id}" />
+                        <button type="submit"
+                                class="w-full py-3 rounded-full border-2 border-slate-800 text-slate-800 font-bold hover:bg-slate-800 hover:text-white transition-all duration-300 uppercase tracking-wider text-sm shadow-sm hover:shadow-lg">
+                            Comprar
+                        </button>
+                    </form>
+                </div>
+                <div th:unless="${session.logado != null}">
+                    <a href="/login" class="block w-full text-center py-3 rounded-full border-2 border-slate-200 text-slate-400 font-bold hover:border-slate-400 hover:text-slate-600 transition-all text-sm uppercase">
+                        Logar p/ comprar
+                    </a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div th:if="${#lists.isEmpty(response)}" class="text-center py-20 opacity-50">
+        <svg class="w-16 h-16 mx-auto mb-4 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4"></path></svg>
+        <p class="text-xl font-medium text-slate-500">Nenhum item encontrado nesta categoria.</p>
+    </div>
+
+</main>
+
+<footer class="bg-white border-t border-slate-200 py-10 mt-10">
+    <div class="container mx-auto text-center text-slate-400 text-sm">
+        <p>&copy; 2025 Poké Mart Online. Todos os direitos reservados.</p>
+    </div>
+</footer>
+
+</body>
+</html>

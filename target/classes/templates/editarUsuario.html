@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Usuário</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>tailwind.config = { theme: { extend: { fontFamily: { 'sans': ['Poppins', 'sans-serif'] } } } }</script>
+</head>
+<body class="bg-gray-50 flex items-center justify-center min-h-screen p-4">
+
+<div class="bg-white rounded-3xl shadow-xl w-full max-w-lg p-10 border border-slate-100">
+    <h2 class="text-2xl font-bold text-slate-900 mb-6">Editar Dados do Usuário</h2>
+
+    <form th:action="@{/atualizar}" th:object="${usuario}" method="post" class="space-y-5">
+        <input type="hidden" th:field="*{id}">
+
+        <div>
+            <label class="block text-sm font-bold text-slate-700 mb-2">Nome</label>
+            <input type="text" th:field="*{nome}" class="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-200 focus:border-blue-500 outline-none transition">
+        </div>
+
+        <div>
+            <label class="block text-sm font-bold text-slate-700 mb-2">Senha</label>
+            <input type="text" th:field="*{senha}" class="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-200 focus:border-blue-500 outline-none transition">
+        </div>
+
+        <div>
+            <label class="block text-sm font-bold text-slate-700 mb-2">Dinheiro (₽)</label>
+            <input type="number" step="0.01" th:field="*{dinheiro}" class="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-200 focus:border-blue-500 outline-none transition">
+        </div>
+
+        <div class="flex items-center gap-3 p-4 bg-slate-50 rounded-xl border border-slate-200">
+            <input type="checkbox" th:field="*{staff}" class="w-5 h-5 text-blue-600 rounded focus:ring-blue-500 border-gray-300">
+            <label class="font-bold text-slate-700">Acesso de Administrador (Staff)</label>
+        </div>
+
+        <div class="pt-4 flex gap-4">
+            <button type="submit" class="flex-grow bg-blue-600 hover:bg-blue-700 text-white font-bold py-3.5 rounded-xl shadow-lg transition">Salvar</button>
+            <a href="/listar" class="px-6 py-3.5 border-2 border-slate-200 text-slate-600 font-bold rounded-xl hover:bg-slate-100 transition">Cancelar</a>
+        </div>
+    </form>
+</div>
+
+</body>
+</html>
