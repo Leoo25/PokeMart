@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<div th:fragment="mochilaComponente">
+
+    <div id="mochila-container" class="hidden fixed bottom-24 right-6 w-80 max-h-[60vh] bg-white rounded-3xl shadow-2xl border-4 border-blue-900/10 overflow-hidden flex flex-col z-50">
+
+        <div class="bg-[#1b3b78] p-3 flex justify-between items-center">
+            <h2 class="text-white font-bold text-sm flex items-center gap-2">
+                🎒 Seu Inventário
+                <span class="bg-blue-500 text-xs px-2 py-0.5 rounded-full"
+                      th:if="${itens != null}" th:text="${#lists.size(itens)}">0</span>
+            </h2>
+            <button onclick="toggleMochila()" class="text-white hover:text-red-300">✕</button>
+        </div>
+
+        <div class="overflow-y-auto p-3 bg-slate-50 flex-grow">
+            <div th:if="${itens == null || #lists.isEmpty(itens)}" class="text-center text-gray-400 py-4">
+                <p class="text-xs">Mochila vazia.</p>
+            </div>
+
+            <div th:if="${itens != null}" class="grid grid-cols-2 gap-2">
+                <div th:each="item : ${itens}" class="bg-white rounded-lg p-2 shadow-sm border border-slate-200 text-center">
+                    <div class="text-lg">📦</div>
+                    <h3 th:text="${item.nomeDoProduto}" class="text-xs font-bold text-slate-700 truncate">Item</h3>
+                    <span class="text-[10px] text-slate-400">Qtd: <b th:text="${item.qtd}">1</b></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <button onclick="toggleMochila()"
+            class="fixed bottom-6 right-6 w-14 h-14 bg-[#1b3b78] hover:bg-[#2a4fa3] rounded-full shadow-lg flex items-center justify-center transition hover:scale-110 z-50 border-4 border-white">
+        <img src="https://cdn-icons-png.flaticon.com/512/2936/2936886.png" class="w-6 h-6 brightness-0 invert" alt="Mochila">
+    </button>
+
+    <script>
+        function toggleMochila() {
+            const mochila = document.getElementById('mochila-container');
+            mochila.classList.toggle('hidden');
+        }
+    </script>
+</div>
+
+</body>
+</html>

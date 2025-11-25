@@ -14,6 +14,10 @@ public class Item {
     @ManyToOne
     private Usuario usuario;
 
+    private int qtd;
+
+    private String imagemUrl;
+
     public Item() {}
 
     public Item(String nomeDoProduto, Usuario usuario) {
@@ -40,4 +44,12 @@ public class Item {
     public void setUsuario(Usuario usuario) {
         this.usuario = usuario;
     }
+
+    public int getQtd() { return qtd; }
+    public void setQtd(int qtd) { this.qtd = qtd; }
+
+    public String getImagemUrl() { return imagemUrl; }
+    public void setImagemUrl(String imagemUrl) { this.imagemUrl = imagemUrl; }
+
+
 }

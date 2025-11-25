@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inventário</title>
+    <link rel="icon" type="image/x-icon" href="/img/logo-pokemart.png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Poppins', sans-serif; }
+
+        /* Animação suave para a entrada do inventário */
+        .pop-up-enter {
+            animation: popUp 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+
+        @keyframes popUp {
+            from { opacity: 0; transform: scale(0.8) translateY(20px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
+        }
+    </style>
+</head>
+<body class="bg-slate-100 min-h-screen p-8 relative">
+
+<div class="container mx-auto">
+    <h1 class="text-4xl font-bold text-slate-800 mb-4">Área de Exploração</h1>
+    <p class="text-slate-500">O seu inventário está guardado na mochila. Clique nela para abrir!</p>
+</div>
+
+<div id="mochila-container" class="hidden fixed bottom-24 right-6 w-80 md:w-96 max-h-[70vh] bg-white rounded-3xl shadow-2xl border-4 border-blue-900/10 overflow-hidden flex flex-col z-50 pop-up-enter">
+
+    <div class="bg-[#1b3b78] p-4 flex justify-between items-center">
+        <h2 class="text-white font-bold text-lg flex items-center gap-2">
+            🎒 Mochila
+            <span class="bg-blue-500 text-xs px-2 py-0.5 rounded-full" th:text="${#lists.size(itens)}">0</span>
+        </h2>
+        <button onclick="toggleMochila()" class="text-white/70 hover:text-white">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+        </button>
+    </div>
+
+    <div class="overflow-y-auto p-4 bg-slate-50 flex-grow">
+
+        <div class="grid grid-cols-2 gap-3">
+            <div th:each="item : ${itens}"
+                 class="group bg-white rounded-xl p-3 shadow-sm hover:shadow-md border border-slate-200 flex flex-col items-center text-center transition-all">
+
+                <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center mb-2 text-xl">
+                    📦
+                </div>
+
+                <h3 th:text="${item.nomeDoProduto}" class="text-sm font-bold text-slate-700 leading-tight mb-1">
+                    Nome do Item
+                </h3>
+
+                <span class="text-xs text-slate-400 bg-slate-100 px-2 py-1 rounded-lg">
+                        Qtd: <span th:text="${item.qtd}" class="font-bold text-slate-600">1</span>
+                    </span>
+            </div>
+        </div>
+
+        <div th:if="${#lists.isEmpty(itens)}" class="text-center text-gray-400 mt-8 mb-8">
+            <p class="text-sm">Sua mochila está vazia.</p>
+            <a href="/consumirApi" class="text-xs text-blue-600 font-bold hover:underline mt-2 block">Ir para a Loja</a>
+        </div>
+    </div>
+
+    <div class="p-3 bg-white border-t text-center">
+        <a href="/consumirApi" class="block w-full bg-blue-600 hover:bg-blue-700 text-white text-sm font-bold py-2 rounded-xl transition">
+            Comprar mais itens
+        </a>
+    </div>
+</div>
+
+<button onclick="toggleMochila()"
+        class="fixed bottom-6 right-6 w-16 h-16 bg-[#1b3b78] hover:bg-[#2a4fa3] rounded-full shadow-lg shadow-blue-900/40 flex items-center justify-center transition transform hover:scale-110 hover:-translate-y-1 z-50 group border-4 border-white">
+    <img src="https://cdn-icons-png.flaticon.com/512/2936/2936886.png" class="w-8 h-8 brightness-0 invert group-hover:rotate-12 transition" alt="Mochila">
+</button>
+
+<script>
+    function toggleMochila() {
+        const mochila = document.getElementById('mochila-container');
+
+        if (mochila.classList.contains('hidden')) {
+            mochila.classList.remove('hidden');
+        } else {
+            mochila.classList.add('hidden');
+        }
+    }
+</script>
+
+</body>
+</html>

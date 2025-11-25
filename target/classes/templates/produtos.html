@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Poké Mart - Loja Oficial</title>
+    <link rel="icon" type="image/x-icon" href="/img/logo-pokemart.png">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -15,12 +16,14 @@
         tailwind.config = {
             theme: {
                 extend: {
+
                     fontFamily: {
                         'sans': ['Poppins', 'sans-serif'],
                     },
                     colors: {
                         'poke-blue': '#1e293b',
                         'poke-dark': '#0f172a',
+
                     }
                 }
             }
@@ -28,46 +31,40 @@
     </script>
 
     <style>
-        /* Estilo para a imagem de fundo do Hero (Banner Principal) */
-        .hero-bg {
-            /* Coloque aqui a URL da imagem de fundo exata do jogo se tiver,
-               por enquanto usei um placeholder temático escuro */
-            background-image: linear-gradient(to bottom, rgba(15, 23, 42, 0.4), rgba(15, 23, 42, 0.9)),
-                              url('https://images.unsplash.com/photo-1613771404721-c55d8d2a861d?q=80&w=1920&auto=format&fit=crop');
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
+        .divisoria {
+            position: absolute;
+            bottom: 0; /* encosta na imagem */
+            left: 0;
+            width: 100%;
+            height: 90px;
+            background: #f9fafb; /* SÓLIDO */
+            clip-path: polygon(0 60%, 100% 0, 100% 100%, 0 100%);
+            z-index: 10; /* Isso que traz ela pra frente */
         }
 
-        /* Efeito de vidro para o Header */
-        .glass-nav {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-        }
     </style>
+
 </head>
 <body class="bg-gray-50 font-sans text-slate-800 antialiased selection:bg-blue-500 selection:text-white">
 
 <div class="fixed top-0 left-0 w-full z-50 pt-6 px-4 flex justify-center">
-    <nav class="glass-nav rounded-full shadow-2xl px-8 py-3 w-full max-w-7xl flex items-center justify-between border border-white/50">
+    <nav class="bg-white/90 backdrop-blur-md glass-nav rounded-full shadow-2xl px-8 py-3 w-full max-w-7xl flex items-center justify-between border border-white/50">
         <a href="/" class="flex items-center gap-2 group">
-            <div class="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center text-white font-bold shadow-lg group-hover:rotate-180 transition-transform duration-500">
-                <div class="w-2 h-2 bg-white rounded-full border-2 border-blue-600"></div>
-            </div>
-            <span class="text-xl font-extrabold tracking-tight text-slate-900">POKÉ <span class="text-blue-600">MART</span></span>
+            <div><img src="/img/logo-pokemart.png" alt="logo" class="w-8"></div>
+            <span class="text-xl font-extrabold tracking-tight text-[#1B3B78]">POKé <span class="text-[#1B3B78]">MART</span>
         </a>
 
         <div class="hidden md:flex items-center gap-8 font-medium text-slate-600">
-            <a href="/" class="hover:text-blue-600 transition-colors">Home</a>
-            <a href="/consumirApi" class="text-blue-600 font-semibold">Itens</a>
-            <a href="/contato" class="hover:text-blue-600 transition-colors">Contato</a>
+            <a href="/" class="hover:text-[#142951] transition-colors">Home</a>
+            <a href="/consumirApi" class="text-[#1b3b78] font-semibold">Itens</a>
+            <a href="/contato" class="hover:text-[#142951] transition-colors">Contato</a>
         </div>
 
         <div class="flex items-center gap-4">
             <div th:if="${session.logado != null}" class="flex items-center gap-3">
                 <div class="hidden md:flex flex-col items-end leading-tight">
                     <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Saldo</span>
-                    <span class="font-bold text-blue-600 bg-blue-50 px-3 py-1 rounded-full border border-blue-100">
+                    <span class="font-bold text-[#1b3b78] bg-blue-50 px-3 py-1 rounded-full border border-blue-100">
                             ₽ <span th:text="${#numbers.formatDecimal(session.logado.dinheiro, 1, 'POINT', 2, 'COMMA')}">50000,00</span>
                         </span>
                 </div>
@@ -75,7 +72,7 @@
                     <svg class="w-6 h-6 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
                 </div>
 
-                <a th:if="${session.logado.staff}" href="/produtos/novo" class="bg-blue-600 hover:bg-blue-700 text-white p-2 rounded-full transition shadow-lg" title="Adicionar Item">
+                <a th:if="${session.logado.staff}" href="/produtos/novo" class="bg-[#1b3b78] hover:bg-[#142951] text-white p-2 rounded-full transition shadow-lg" title="Adicionar Item">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
                     </svg>
@@ -83,7 +80,7 @@
             </div>
 
             <div th:unless="${session.logado != null}">
-                <a href="/login" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2.5 rounded-full font-semibold transition-all shadow-lg hover:shadow-blue-500/30 text-sm">
+                <a href="/login" class="bg-[#1b3b78] hover:bg-[#142951] text-white px-6 py-2.5 rounded-full font-semibold transition-all shadow-lg hover:shadow-blue-500/30 text-sm">
                     Login
                 </a>
             </div>
@@ -91,10 +88,133 @@
     </nav>
 </div>
 
-<header class="hero-bg h-[600px] w-full relative flex items-center justify-center -mt-24 pt-24 overflow-hidden">
-    <div class="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-gray-50 to-transparent"></div>
+<div id="mochila-container" class="hidden fixed bottom-24 right-6 w-80 md:w-96 max-h-[70vh] bg-white rounded-3xl shadow-2xl border-4 border-blue-900/10 overflow-hidden flex flex-col z-50 pop-up-enter">
 
-    <div class="container max-w-7xl mx-auto px-6 relative z-10 text-center md:text-left mt-10">
+    <div class="bg-[#1b3b78] p-4 flex justify-between items-center">
+        <h2 class="text-white font-bold text-lg flex items-center gap-2">
+            🎒 Mochila
+            <span class="bg-blue-500 text-xs px-2 py-0.5 rounded-full"
+                  th:text="${itens != null ? #lists.size(itens) : 0}">0</span>
+        </h2>
+        <button onclick="toggleMochila()" class="text-white/70 hover:text-white">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+        </button>
+    </div>
+
+    <div class="overflow-y-auto p-4 bg-slate-50 flex-grow">
+
+        <div class="grid grid-cols-2 gap-3" th:if="${itens != null}">
+            <div th:each="item : ${itens}"
+                 class="group bg-white rounded-xl p-3 shadow-sm hover:shadow-md border border-slate-200 flex flex-col items-center text-center transition-all">
+
+                <div class="w-12 h-12 mb-2 bg-white rounded-lg flex items-center justify-center overflow-hidden border border-slate-100">
+                    <img th:if="${item.imagemUrl != null}"
+                         th:src="${item.imagemUrl}"
+                         alt="Item"
+                         class="w-full h-full object-contain">
+
+                    <span th:unless="${item.imagemUrl != null}" class="text-2xl">📦</span>
+                </div>
+
+                <h3 th:text="${item.nomeDoProduto}" class="text-sm font-bold text-slate-700 leading-tight mb-1">
+                    Nome do Item
+                </h3>
+
+                <span class="text-xs text-slate-400 bg-slate-100 px-2 py-1 rounded-lg">
+                    Qtd: <span th:text="${item.qtd}" class="font-bold text-slate-600">1</span>
+                </span>
+            </div>
+        </div>
+
+        <div th:if="${itens == null || #lists.isEmpty(itens)}" class="text-center text-gray-400 mt-8 mb-8">
+            <p class="text-sm">Sua mochila está vazia.</p>
+            <a href="/consumirApi" class="text-xs text-blue-600 font-bold hover:underline mt-2 block">Ir para a Loja</a>
+        </div>
+    </div>
+
+    <div class="p-3 bg-white border-t text-center">
+        <a href="/consumirApi" class="block w-full bg-blue-600 hover:bg-blue-700 text-white text-sm font-bold py-2 rounded-xl transition">
+            Comprar mais itens
+        </a>
+    </div>
+</div>
+
+<button onclick="toggleMochila()"
+        class="fixed bottom-6 right-6 w-16 h-16 bg-[#1b3b78] hover:bg-[#2a4fa3] rounded-full shadow-lg shadow-blue-900/40 flex items-center justify-center transition transform hover:scale-110 hover:-translate-y-1 z-50 group border-4 border-white">
+    <img src="https://cdn-icons-png.flaticon.com/512/2936/2936886.png" class="w-8 h-8 brightness-0 invert group-hover:rotate-12 transition" alt="Mochila">
+</button>
+
+<script>
+    function toggleMochila() {
+        const mochila = document.getElementById('mochila-container');
+        mochila.classList.toggle('hidden');
+    }
+</script>
+
+<audio id="musica-fundo" loop>
+    <source src="/msc/Littleroot.mp3" type="audio/mp3">
+</audio>
+
+<button onclick="toggleSom()" id="btn-som" class="fixed bottom-6 left-6 z-50 bg-white/80 backdrop-blur p-3 rounded-full shadow-lg border border-slate-200 hover:bg-white transition group">
+    <svg id="icon-som-on" class="w-6 h-6 text-slate-700 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"></path></svg>
+
+    <svg id="icon-som-off" class="w-6 h-6 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z m9.9 2.121l-2.828-2.828m2.828-2.828l-2.828 2.828"></path></svg>
+</button>
+
+<script>
+    const audio = document.getElementById('musica-fundo');
+    const iconOn = document.getElementById('icon-som-on');
+    const iconOff = document.getElementById('icon-som-off');
+
+    // Define volume baixo pra começar (10%)
+    audio.volume = 0.1;
+
+    // Tenta tocar assim que carrega (alguns navegadores deixam se o usuário já tiver interagido com o site antes)
+    let playPromise = audio.play();
+
+    if (playPromise !== undefined) {
+        playPromise.then(_ => {
+            // Autoplay funcionou!
+            atualizarIcone(true);
+        })
+            .catch(error => {
+                // Autoplay bloqueado. Vamos esperar o primeiro clique na página.
+                document.addEventListener('click', iniciarMusica, { once: true });
+            });
+    }
+
+    function iniciarMusica() {
+        audio.play();
+        atualizarIcone(true);
+    }
+
+    function toggleSom() {
+        if (audio.paused) {
+            audio.play();
+            atualizarIcone(true);
+        } else {
+            audio.pause();
+            atualizarIcone(false);
+        }
+    }
+
+    function atualizarIcone(tocando) {
+        if (tocando) {
+            iconOn.classList.remove('hidden');
+            iconOff.classList.add('hidden');
+        } else {
+            iconOn.classList.add('hidden');
+            iconOff.classList.remove('hidden');
+        }
+    }
+</script>
+
+<header class="hero-bg h-[750px] bg-[url('/img/background-site.png')]  w-full relative flex items-center justify-center -mt-24 pt-24 overflow-hidden">
+    <div class="divisoria"></div>
+
+    <div class="container max-w-7xl mx-auto px-6 relative z-10 text-center md:text-left mb-20">
         <h1 class="text-4xl md:text-6xl font-extrabold text-white leading-tight drop-shadow-lg max-w-2xl">
             A melhor loja <br/>
             online em todo <br/>
@@ -106,7 +226,9 @@
     </div>
 </header>
 
-<main class="container max-w-7xl mx-auto px-6 -mt-20 relative z-20 pb-20">
+
+
+<main class="container max-w-7xl mx-auto px-6 -mt-60 relative z-20 pb-20">
 
     <div class="mb-8 space-y-2">
         <div th:if="${param.updated}" class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 rounded shadow-md flex items-center justify-between">
@@ -144,7 +266,7 @@
     </div>
 
 
-            <div th:if="${categoriaSelecionada != null}" class="mb-6 inline-block">
+    <div th:if="${categoriaSelecionada != null}" class="mb-6 inline-block">
         <h2 class="text-xl font-bold text-slate-700 border-2 border-slate-300 rounded-full px-6 py-2 uppercase tracking-wide">
             <span th:text="${categoriaSelecionada}">Categoria</span>:
         </h2>

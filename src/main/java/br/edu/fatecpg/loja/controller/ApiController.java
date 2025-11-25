@@ -37,7 +37,7 @@ public class ApiController {
 
     @GetMapping("/consumirApi")
     public String consumirApi(Model model) {
-        String url = "https://refers-optics-yrs-gain.trycloudflare.com/itens";
+        String url = "https://netscape-icons-terminal-snowboard.trycloudflare.com/itens";
         RestTemplate restTemplate = new RestTemplate();
 
         try {
@@ -55,7 +55,7 @@ public class ApiController {
 
     @GetMapping("/categoria")
     public String consumirporCategoria(@RequestParam(required = false) String categoria, Model model) {
-        String url = "https://refers-optics-yrs-gain.trycloudflare.com/itens";
+        String url = "https://netscape-icons-terminal-snowboard.trycloudflare.com/itens";
         RestTemplate restTemplate = new RestTemplate();
 
         try {
@@ -120,5 +120,3 @@ public class ApiController {
 
 
 }
-
-

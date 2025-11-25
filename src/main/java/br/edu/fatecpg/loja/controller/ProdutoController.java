@@ -25,6 +25,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -67,7 +68,7 @@ public class ProdutoController {
             caminhoTemporario = Paths.get("uploads/" + nomeArquivo);
             Files.write(caminhoTemporario, imagem.getBytes());
 
-            String apiUrl = "https://refers-optics-yrs-gain.trycloudflare.com/itens";
+            String apiUrl = "https://netscape-icons-terminal-snowboard.trycloudflare.com/itens";
 
             Map<String, Object> dadosObj = new HashMap<>();
             dadosObj.put("nome", nome);
@@ -96,7 +97,7 @@ public class ProdutoController {
 
             restTemplate.postForEntity(apiUrl, request, String.class);
 
-            // CORREÇÃO: Deleção segura
+
             if (caminhoTemporario != null) {
                 try { Files.deleteIfExists(caminhoTemporario); } catch (Exception e) { /* Ignora erro de arquivo preso */ }
             }
@@ -115,7 +116,7 @@ public class ProdutoController {
     @GetMapping("/editar/{id}")
     public String abrirFormularioEdicao(@PathVariable Long id, Model model) {
         try {
-            String apiUrl = "https://refers-optics-yrs-gain.trycloudflare.com/itens/" + id;
+            String apiUrl = "https://netscape-icons-terminal-snowboard.trycloudflare.com/itens/" + id;
 
             ResponseEntity<Map> response = restTemplate.getForEntity(apiUrl, Map.class);
             model.addAttribute("produto", response.getBody());
@@ -134,7 +135,7 @@ public class ProdutoController {
             @RequestParam Long id,
             @RequestParam String nome,
             @RequestParam String descricao,
-            @RequestParam String preco, // MUDOU DE double PARA String
+            @RequestParam String preco,
             @RequestParam int qtd,
             @RequestParam String categoria,
             @RequestParam(value = "imagem", required = false) MultipartFile imagem
@@ -145,7 +146,7 @@ public class ProdutoController {
 
             double precoDouble = Double.parseDouble(preco.replace(",", "."));
 
-            String apiUrl = "https://refers-optics-yrs-gain.trycloudflare.com/itens/" + id;
+            String apiUrl = "https://netscape-icons-terminal-snowboard.trycloudflare.com/itens/" + id;
 
             Map<String, Object> dadosObj = new HashMap<>();
             dadosObj.put("nome", nome);
@@ -202,13 +203,12 @@ public class ProdutoController {
     @GetMapping("/deletar/{id}")
     public String deletarProduto(@PathVariable Long id) {
         try {
-            String apiUrl = "https://refers-optics-yrs-gain.trycloudflare.com/itens/" + id;
+            String apiUrl = "https://netscape-icons-terminal-snowboard.trycloudflare.com/itens/" + id;
             HttpHeaders headers = new HttpHeaders();
             HttpEntity<String> request = new HttpEntity<>(headers);
 
             restTemplate.exchange(apiUrl, HttpMethod.DELETE, request, Void.class);
 
-            // Alterei para /consumirApi para evitar erro 404
             return "redirect:/consumirApi?successDelete";
 
         } catch (Exception e) {
@@ -226,7 +226,7 @@ public class ProdutoController {
                 return "redirect:/login";
             }
 
-            String baseUrl = "https://refers-optics-yrs-gain.trycloudflare.com/itens/";
+            String baseUrl = "https://netscape-icons-terminal-snowboard.trycloudflare.com/itens/";
 
             Produto itemApi;
             try {
@@ -237,9 +237,11 @@ public class ProdutoController {
 
             Usuario usuario = usuarioRepository.findById(usuarioDaSessao.getId()).orElseThrow();
 
+
             if (usuario.getDinheiro() < itemApi.getPreco()) {
                 return "redirect:/consumirApi?errorSemSaldo";
             }
+
 
             Map<String, Integer> body = new HashMap<>();
             body.put("qtd", 1);
@@ -249,15 +251,37 @@ public class ProdutoController {
 
             restTemplate.postForEntity(baseUrl + id + "/comprar", request, String.class);
 
+
             usuario.setDinheiro(usuario.getDinheiro() - itemApi.getPreco());
 
-            Item novoItem = new Item();
-            novoItem.setNomeDoProduto(itemApi.getNome());
-            novoItem.setUsuario(usuario);
+            Item itemExistente = null;
 
-            usuario.getItens().add(novoItem);
+
+            for (Item item : usuario.getItens()) {
+                if (item.getNomeDoProduto().equals(itemApi.getNome())) {
+                    itemExistente = item;
+                    break;
+                }
+            }
+
+            if (itemExistente != null) {
+
+                itemExistente.setQtd(itemExistente.getQtd() + 1);
+            } else {
+
+                Item novoItem = new Item();
+                novoItem.setNomeDoProduto(itemApi.getNome());
+                novoItem.setImagemUrl(itemApi.getImagemUrl());
+                novoItem.setUsuario(usuario);
+                novoItem.setQtd(1);
+                usuario.getItens().add(novoItem);
+
+            }
+
+
+
+
             usuarioRepository.save(usuario);
-
             session.setAttribute("logado", usuario);
 
             return "redirect:/consumirApi?updated";
@@ -267,4 +291,14 @@ public class ProdutoController {
             return "redirect:/consumirApi?errorUpdate";
         }
     }
-}
+
+    @GetMapping("/inventario")
+    public String inventario(HttpSession session) {
+        // Só verifica se tá logado pra segurança
+        if (session.getAttribute("logado") == null) {
+            return "redirect:/login";
+        }
+        // Não precisa mais fazer model.addAttribute("itens", ...);
+        // O GlobalControllerAdvice já fez isso!
+        return "inventario";
+    }}

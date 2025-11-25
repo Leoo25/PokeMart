@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Dashboard</title>
+    <link rel="icon" type="image/x-icon" href="/img/logo-pokemart.png">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -18,50 +19,26 @@
         }
     </style>
 </head>
-<body class="bg-slate-50 flex items-center justify-center min-h-screen p-4">
-
+<body class="bg-no-repeat bg-cover bg-center bg-[url('https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/cad4b52e-f6b1-432f-9035-a5f4853bcf15/d7i3cm4-dc9f4577-6b7d-4d59-8b46-a15bf5e84209.gif?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiIvZi9jYWQ0YjUyZS1mNmIxLTQzMmYtOTAzNS1hNWY0ODUzYmNmMTUvZDdpM2NtNC1kYzlmNDU3Ny02YjdkLTRkNTktOGI0Ni1hMTViZjVlODQyMDkuZ2lmIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.DiVYTkYKxHeWgg4Ly_eljxIWbMccx3rBpp9PhafZtGw')] bg-slate-50 flex items-center justify-center min-h-screen p-4">
 <div class="flex items-center gap-4">
 
-<div th:replace="/nav"></div>
-<div class="fixed top-0 left-0 w-full z-50 pt-6 px-4 flex justify-center">
-    <nav class="bg-white/90 backdrop-blur-md rounded-full shadow-2xl px-8 py-3 w-full max-w-7xl flex items-center justify-between border border-white/50">
-        <a href="/" class="flex items-center gap-2">
-            <div class="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center text-white font-bold shadow-lg">P</div>
-            <span class="text-xl font-extrabold tracking-tight text-slate-900">POKÉ <span class="text-blue-600">MART</span></span>
-        </a>
-        <div class="hidden md:flex items-center gap-8 font-medium text-slate-600">
-            <a href="/" class="text-blue-600 font-semibold">Home</a>
-            <a href="/consumirApi" class="hover:text-blue-600 transition-colors">Itens</a>
-            <a href="/contato" class="hover:text-blue-600 transition-colors">Contato</a>
+    <div th:replace="/nav"></div>
+
+
+    <div class="justify-center items-center bg-white/90 backdrop-blur-md rounded-3xl p-16">
+
+        <h2 class="text-3xl font-extrabold text-center text-[#1b3b78] mb-12">Dashboard</h2>
+        <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+            <a th:if="${session.logado.staff}" href="/produtos/novo" class="w-full sm:w-auto px-8 py-4 bg-[#1b3b78] hover:bg-[#142951] text-white font-bold rounded-full shadow-lg transition transform hover:-translate-y-1">
+                Novo Item</a>
+            <a th:if="${session.logado != null && session.logado.staff}" href="/consumirApi" class="w-full sm:w-auto px-8 py-4 bg-[#1b3b78] hover:bg-[#142951] text-white font-bold rounded-full shadow-lg transition transform hover:-translate-y-1">
+                Editar Produtos
+            </a>
+            <a th:if="${session.logado != null && session.logado.staff}" href="/listar" class="w-full sm:w-auto px-8 py-4 bg-[#1b3b78] hover:bg-[#142951] text-white font-bold rounded-full shadow-lg transition transform hover:-translate-y-1">
+                Gerenciar Usuarios
+            </a>
         </div>
-        <div class="flex items-center gap-4">
-            <div th:if="${session.logado != null}" class="flex items-center gap-3">
-                    <span class="font-bold text-blue-600 bg-blue-50 px-3 py-1 rounded-full">
-                        <span th:text="${session.logado.nome}">User</span>
-                    </span>
-                <a href="/logout" class="text-sm text-red-500 hover:text-red-700 font-semibold">Sair</a>
-            </div>
-            <div th:unless="${session.logado != null}" class="flex gap-2">
-                <a href="/login" class="text-slate-600 hover:text-blue-600 font-semibold px-4 py-2">Login</a>
-                <a href="/cadastro" class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-full font-semibold transition shadow-lg">Cadastrar</a>
-            </div>
-        </div>
-    </nav>
-</div>
-
-
-<div class="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
-
-    <a th:if="${session.logado.staff}" href="/produtos/novo" class="w-full sm:w-auto px-8 py-4 bg-slate-800 hover:bg-slate-700 text-white font-bold rounded-full shadow-lg transition transform hover:-translate-y-1">
-        Novo Item</a>
-    <a th:if="${session.logado != null && session.logado.staff}" href="/consumirApi" class="w-full sm:w-auto px-8 py-4 bg-slate-800 hover:bg-slate-700 text-white font-bold rounded-full shadow-lg transition transform hover:-translate-y-1">
-        Editar Produtos
-    </a>
-    <a th:if="${session.logado != null && session.logado.staff}" href="/listar" class="w-full sm:w-auto px-8 py-4 bg-slate-800 hover:bg-slate-700 text-white font-bold rounded-full shadow-lg transition transform hover:-translate-y-1">
-        Gerenciar Usuarios
-    </a>
-
-</div>
+    </div>
 </div>
 </div>
 </body>

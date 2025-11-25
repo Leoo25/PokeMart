@@ -10,17 +10,18 @@
         <nav class="bg-white/90 backdrop-blur-md rounded-full shadow-2xl px-8 py-3 w-full max-w-7xl flex items-center justify-between border border-white/50">
 
             <a href="/" class="flex items-center gap-2">
-                <div class="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center text-white font-bold shadow-lg">P</div>
-                <span class="text-xl font-extrabold tracking-tight text-slate-900">POKÉ <span class="text-blue-600">MART</span></span>
+                <div><img src="/img/logo-pokemart.png" alt="logo" class="w-8"></div>
+                <span class="text-xl font-extrabold tracking-tight text-[#1B3B78]">POKé <span class="text-[#1B3B78]">MART</span></span>
             </a>
 
             <div class="hidden md:flex items-center gap-8 font-medium text-slate-600">
-                <a href="/" class="text-blue-600 font-semibold">Home</a>
-                <a href="/consumirApi" class="hover:text-blue-600 transition-colors">Itens</a>
-                <a href="/contato" class="hover:text-blue-600 transition-colors">Contato</a>
+                <a href="/" class="text-[#1B3B78] font-semibold">Home</a>
+                <a href="/consumirApi" class="hover:text-[#1B3B78] transition-colors">Itens</a>
+                <a href="/contato" class="hover:text-[#1B3B78] transition-colors">Contato</a>
             </div>
 
             <div class="flex items-center gap-4">
+
                 <div th:if="${session.logado != null}" class="flex items-center gap-3">
                     <span class="font-bold text-blue-600 bg-blue-50 px-3 py-1 rounded-full">
                         <span th:text="${session.logado.nome}">User</span>
@@ -29,8 +30,8 @@
                 </div>
 
                 <div th:unless="${session.logado != null}" class="flex gap-2">
-                    <a href="/login" class="text-slate-600 hover:text-blue-600 font-semibold px-4 py-2">Login</a>
-                    <a href="/cadastro" class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-full font-semibold transition shadow-lg">Cadastrar</a>
+                    <a href="/login" class="text-slate-600 hover:text-[#1B3B78] font-semibold px-4 py-2">Login</a>
+                    <a href="/cadastro" class="bg-[#1B3B78] hover:bg-[#142951] text-white px-5 py-2 rounded-full font-semibold transition shadow-lg">Cadastrar</a>
                 </div>
             </div>
 
