@@ -294,11 +294,10 @@ public class ProdutoController {
 
     @GetMapping("/inventario")
     public String inventario(HttpSession session) {
-        // Só verifica se tá logado pra segurança
+
         if (session.getAttribute("logado") == null) {
             return "redirect:/login";
         }
-        // Não precisa mais fazer model.addAttribute("itens", ...);
-        // O GlobalControllerAdvice já fez isso!
+
         return "inventario";
     }}
