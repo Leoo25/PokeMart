@@ -11,25 +11,24 @@ import org.springframework.ui.Model;
 
 import java.util.List;
 
-@ControllerAdvice // Essa anotação diz: "Isso vale para TODO o projeto"
+@ControllerAdvice 
 public class GlobalControllerAdvice {
 
     @Autowired
     private ItemRepository itemRepository;
 
-    // @ModelAttribute faz esse método rodar antes de QUALQUER página abrir
+
     @ModelAttribute
     public void carregarMochilaGlobal(HttpSession session, Model model) {
 
-        // 1. Pega o usuário da sessão
+
         Usuario usuarioLogado = (Usuario) session.getAttribute("logado");
 
-        // 2. Se tiver alguém logado, carrega os itens
+    
         if (usuarioLogado != null) {
             List<Item> itens = itemRepository.findByUsuarioId(usuarioLogado.getId());
 
-            // 3. Coloca no Model globalmente.
-            // Agora a variável ${itens} existe em TODAS as páginas HTML.
+            
             model.addAttribute("itens", itens);
         }
     }
